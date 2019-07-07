@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:unsplash_api/bloc/images.dart';
 import 'package:unsplash_api/views/search_image/search_results_view.dart';
 
 class DataSearch extends SearchDelegate<String> {
@@ -59,6 +58,7 @@ class DataSearch extends SearchDelegate<String> {
     return ListView.builder(
       itemBuilder: (BuildContext context, int index) => InkWell(
             onTap: () {
+              Navigator.of(context).pop();
               Navigator.of(context).push(
                 MaterialPageRoute<Widget>(
                   builder: (BuildContext context) =>
