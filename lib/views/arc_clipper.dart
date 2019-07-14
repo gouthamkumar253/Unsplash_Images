@@ -50,7 +50,7 @@ class _ArcBannerImageState extends State<ArcBannerImage> {
                     clipper: ArcClipper(),
                     child: FadeInImage.memoryNetwork(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 2,
+//                      height: MediaQuery.of(context).size.height / 2,
                       fit: BoxFit.cover,
                       alignment: Alignment.center,
                       image: widget.image.urls.small,
