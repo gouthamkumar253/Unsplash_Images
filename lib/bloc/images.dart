@@ -13,8 +13,10 @@ class ImagesBloc {
   Observable<List<AllImages>> get images => _imagesFetcher.stream;
   Observable<SearchResults> get searchImages=>_searchImagesFetcher.stream;
 
-  void fetchImages() async {
-    final List<AllImages> images = await _repository.fetchAllImages();
+  void fetchImages(int page, List<AllImages> images,int value) async {
+    final List<AllImages> image = await _repository.fetchAllImages(page,value);
+    images.addAll(image);
+    print(images.length.toString()+'is the length of images');
     _imagesFetcher.sink.add(images);
   }
   void searchQueryImage(String query) async {

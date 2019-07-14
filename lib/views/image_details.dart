@@ -9,43 +9,43 @@ class ImageDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(image.toString());
+    print(image.id.toString() + ' is the image id');
     return Scaffold(
-      appBar: AppBar(
-        title: Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              image.description != null ? image.description : 'Sample image',
-              style: TextStyle(fontSize: 30),
+      body: SafeArea(
+        child: NestedScrollView(
+          controller: ScrollController(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                iconTheme: const IconThemeData(
+                  color: Colors.black, //change your color here
+                ),
+                backgroundColor: Colors.white,
+                title: Text(
+                  image.description!=null?image.description:'Sample Image',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                forceElevated: innerBoxIsScrolled,
+              ),
+            ];
+          },
+          body: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Hero(
+                tag: 'photo${image.id}',
+                child: Container(
+                  child: ArcBannerImage(image: image),
+                ),
+              ),
             ),
-        ),
-        backgroundColor: Colors.grey,
-
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: const <Color>[
-              const Color(0xFFf5f7fa),
-              const Color(0xFFc3cfe2)
-            ],
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-// Using Hero Widget here gives a problem with the rendering of the image, but the animation would be good to see
-          child: Hero(
-            tag: 'photo${image.id}',
-            child: Container(
-              child: ArcBannerImage(image: image),
-            ),
-          ),
-// This is the alternate code too eliminate the above commented problem, but I'm sticking with the animation for now
-//        child: Container(
-//          child: ArcBannerImage(image:image),
-//        ),
         ),
       ),
     );

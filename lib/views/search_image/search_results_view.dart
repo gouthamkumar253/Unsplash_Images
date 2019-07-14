@@ -25,52 +25,69 @@ class _SearchResultsViewState extends State<SearchResultsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Your Search Results Are',
-          style: TextStyle(fontSize: 30),
-        ),
-        backgroundColor: Colors.grey,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: const <Color>[
-              const Color(0xFFf5f7fa),
-              const Color(0xFFc3cfe2)
-            ],
-          ),
-        ),
-        child: ListView(
-          children: <Widget>[
-            Container(
-              child: StreamBuilder<SearchResults>(
-                stream: stream,
-                builder: (BuildContext context,
-                    AsyncSnapshot<SearchResults> snapshot) {
-                  if (snapshot.hasData) {
-                    print('Data Retrieved for the search');
-                    print(snapshot.data.results.length);
-                    return StaggeredView(
-                      images: snapshot.data.results,
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text(snapshot.error.toString());
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(50),
-                    child: Center(
-                      child: const CircularProgressIndicator(),
-                    ),
-                  );
-                  },
+      body: SafeArea(
+        child: NestedScrollView(
+          controller: ScrollController(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                backgroundColor: Colors.white,
+                iconTheme: const IconThemeData(
+                  color: Colors.black, //change your color here
+                ),
+                title: const Text(
+                  'Search Results',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                  ),
+                ),
+                forceElevated: innerBoxIsScrolled,
               ),
+            ];
+          },
+          body: Container(
+            child: ListView(
+              children: <Widget>[
+                Container(
+                  child: StreamBuilder<SearchResults>(
+                    stream: stream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<SearchResults> snapshot) {
+                      if (snapshot.hasData) {
+                        print('Data Retrieved for the search');
+                        print(snapshot.data.results.length);
+                        return snapshot.data.total == 0
+                            ? Center(
+                                child: const Padding(
+                                  padding: const EdgeInsets.all(50.0),
+                                  child: const Text(
+                                      'No results. Please try again.'),
+                                ),
+                              )
+                            : StaggeredView(
+                                images: snapshot.data.results,
+                                lazy: false,
+                              );
+                      } else if (snapshot.hasError) {
+                        return Text(snapshot.error.toString());
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.all(50),
+                        child: Center(
+                          child: const CircularProgressIndicator(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
   }
 }
+

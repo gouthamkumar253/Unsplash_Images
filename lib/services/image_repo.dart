@@ -9,7 +9,7 @@ class Repository {
   final ImagesAPI moviesApiProvider = ImagesAPI();
 
 
-  Future<List<AllImages>> fetchAllImages() => moviesApiProvider.recentImages();
+  Future<List<AllImages>> fetchAllImages(int page,int value) => moviesApiProvider.recentImages(page:page,value:value);
   Future<SearchResults> searchQueryImages(String searchQuery) => moviesApiProvider.searchImageResults(searchQuery);
 
 
